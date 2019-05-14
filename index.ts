@@ -71,7 +71,7 @@ export class DATA {
     row.id = String(Date.now());
     for (let i = 0; i < this.col.length - 1; i++) {
       if ("role" === this.col[i]) {
-        const newcell = row.insertCell(i);
+        const newcell = row.insertCell(i);//for dropdown 
         newcell.innerHTML = `<td><select class="form-control">
                  <option class="btn btn-primary dropdown-toggle" value="manager">manager</option>
                  <option class="btn btn-primary dropdown-toggle" value="admin">admin</option>
@@ -89,7 +89,6 @@ export class DATA {
   deleteUser = (e: MouseEvent) => {
     let event = e.target as HTMLButtonElement;
     const id: string = event.id.slice(7);
-    // console.log(id);
     let place: number;
     let element = document.getElementById(id) as HTMLElement;
     for (let i = 0; i < this.data.length; i++) {

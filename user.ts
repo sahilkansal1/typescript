@@ -25,8 +25,7 @@ export class User {
   }
   check(id) {
     for (let key in id) {
-        // console.log(key);
-        if (key != "middle_name") {
+        if (key !== "middle_name") {
           if (id[key] === "") {
             throw "all fields are needed";
           }
@@ -41,7 +40,6 @@ export class User {
     }
     if (!/^\d{10}$/.test(this.phone_no)) {
       throw "phone no. invalid";
-    }
-
+    }   
   }
 }
