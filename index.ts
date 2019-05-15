@@ -1,14 +1,13 @@
-import { Data } from "./interface";
+import { DataType } from "./types";
 import { data } from "./data";
 import { User } from "./user";
-let button = document.getElementById("myButton1") as HTMLButtonElement;
-export class DATA {
+export class Main {
   col: Array<string>;
-  data: Data[];
-  role: string[];
-  constructor(data: Data[]) {
+  data: DataType[];
+  roles: string[];
+  constructor(data: DataType[]) {
     this.data = data,
-      this.role = ['admin', 'manager'],
+      this.roles = ['admin', 'manager'],
       this.col = [
          "first_name", 
          "middle_name", 
@@ -52,8 +51,9 @@ export class DATA {
       .join("")}</tbody>`;
   }
   render = () => {
+    let button = document.getElementById("myButton1") as HTMLButtonElement;
     button.value = "refresh data";
-    let element = document.getElementById("table") as HTMLElement;
+    let element = document.getElementById("table") as HTMLTableElement;
     element.innerHTML = this.html()
     for (let i = 0; i < this.data.length; i++) {
       let edit = document.getElementById(
@@ -91,13 +91,8 @@ export class DATA {
     const id: string = event.id.slice(7);
     let place: number;
     let element = document.getElementById(id) as HTMLElement;
-    for (let i = 0; i < this.data.length; i++) {
-      if (id === this.data[i].id) {
-        place = i;
-        this.data.splice(place, 1);
-      }
-    }
-   // User.removeUser(id);
+    const user = new User()
+    user.deleteUser(id);
     let edit = document.getElementById(`edit-${id}`);
     edit.removeEventListener("click", this.deleteUser);
     let deleteUser = document.getElementById(`delete-${id}`);
@@ -131,7 +126,7 @@ export class DATA {
     let event = e.target as HTMLButtonElement;
     const id: string = event.id.slice(5);
     const tab = document.getElementById(id); 
-    let data: Data = {};
+    let data: DataType = {};
     for (let i = 0; i < this.col.length - 1; i++) {
       const td = tab.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
@@ -139,20 +134,11 @@ export class DATA {
         data[this.col[i]] = txtVal;
         data.id = id;  
     }
-    try{console.log(data)
+    try{
       const user = new User(data)
-      console.log(user)
-      let flag: number = 0; //flag to check if id exist or not
-      let place: number;      
-        for (let i = 0; i < this.data.length; i++) {
-          if (id === this.data[i].id) {
-            (flag = 1), (place = i);
-            this.data[place] = data;
-          }     
-      }
-      if (flag !== 1) {      
-        this.data.push(data);
-      }
+      user.check(data)
+      user.save(data)
+     // user.save(id)
       this.render();
     }
     catch(err){
@@ -165,21 +151,20 @@ export class DATA {
     let tab = document.getElementById(id) as HTMLElement;
     for (let i = 0; i < this.col.length - 1; i++) {
       let td = tab.getElementsByTagName("td")[i];
-   if ("role" === this.col[i]) {
-        
+   if ("role" === this.col[i]) {    
         const val = td.innerHTML;
         console.log(val);
         const ele = document.createElement("select"); // DROPDOWN LIST.
         ele.setAttribute("class", "form-control");
         ele.innerHTML = `<option class="btn btn-primary dropdown-toggle" value="${val}
            ">${val}`;
-        for (let k = 0; k < this.role.length; k++) {
+        for (let k = 0; k < this.roles.length; k++) {
           ele.innerHTML =
             ele.innerHTML +
             '<option class="btn btn-primary dropdown-toggle" value="' +
-            this.role[k] +
+            this.roles[k] +
             '">' +
-            this.role[k] +
+            this.roles[k] +
             "</option>";
         }
         td.innerText = "";
@@ -207,5 +192,6 @@ export class DATA {
     return `<button id=${type}-${id} class="${color}">${type}</button>`
   }
 }
-const start = new DATA(data);
-button.addEventListener("click", start.render);
+
+const start = new Main(data);
+document.getElementById("myButton1").addEventListener("click", start.render);

@@ -1,5 +1,5 @@
 
-export interface Data{
+export interface DataType{
     id?:string
     first_name?: string,
     middle_name?: string,
@@ -7,5 +7,5 @@ export interface Data{
     address?: string,
     email?: string,
     phone_no?: number,
-    role?: string
+    role?: any
 }
