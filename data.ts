@@ -1,4 +1,4 @@
-export const data=[{
+export const Usersdata=[{
      id:'1',
     first_name: "sahil",
     middle_name: 'ss',

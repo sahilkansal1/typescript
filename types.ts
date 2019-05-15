@@ -1,5 +1,5 @@
 
-export interface DataType{
+export interface UserDetails{
     id?:string
     first_name?: string,
     middle_name?: string,
