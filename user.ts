@@ -1,10 +1,10 @@
 import { UserDetails } from "./types";
 export class User {
   userInfo: UserDetails;
-  constructor(userInfo?: UserDetails) {
-    if (userInfo) {
+  constructor(userInfo: UserDetails) {
+  
       this.userInfo = userInfo;
-    }
+    
   }
   check(userInfo) {
     for (let key in userInfo) {

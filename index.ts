@@ -10,21 +10,22 @@ export class Main {
   data: UserDetails[];
   roles: string[];
   constructor() {
-    (this.data = Usersdata),
-      (this.roles = [roles.admin, roles.manager]),
-      (this.col = [
-        "first_name",
-        "middle_name",
-        "last_name",
-        "address",
-        "email",
-        "phone_no",
-        "role",
-        "id"
-      ]);
+    this.data = Usersdata;
+    this.roles = [roles.admin, roles.manager];
+    this.col = [
+      "first_name",
+      "middle_name",
+      "last_name",
+      "address",
+      "email",
+      "phone_no",
+      "role",
+      "id"
+    ];
   }
-  html = () => {
-    return `<thead><tr>
+  html = () :string=> {
+    //html layout 
+    return `<thead><tr>               
     <th>first name</th>
     <th>middle name</th>
     <th>last name</th>
@@ -55,8 +56,8 @@ export class Main {
   render = () => {
     const button = document.getElementById("myButton1") as HTMLButtonElement;
     button.value = "refresh data";
-    const element = document.getElementById("table") as HTMLTableElement;
-    element.innerHTML = this.html();
+    const Table = document.getElementById("table") as HTMLTableElement;
+    Table.innerHTML = this.html();
     for (let i = 0; i < this.data.length; i++) {
       //addEventListener to all edit and delete button
       let edit = document.getElementById(
@@ -91,10 +92,12 @@ export class Main {
     let add = document.getElementById(`save-${row.id}`) as HTMLButtonElement;
     add.addEventListener("click", this.save);
   };
-  deleteUser = (e: MouseEvent) => {
+  deleteUser = (e: MouseEvent):void => {
+    //remove user 
     const event = e.target as HTMLButtonElement;
     const Userid: string = event.id.slice(7);
     const element = document.getElementById(Userid) as HTMLElement;
+    //remove user from array
     this.DeleteUser(Userid);
     const edit = document.getElementById(`edit-${Userid}`);
     edit.removeEventListener("click", this.deleteUser);
@@ -102,7 +105,8 @@ export class Main {
     deleteUser.removeEventListener("click", this.deleteUser);
     element.remove();
   };
-  discard = (e: MouseEvent) => {
+  discard = (e: MouseEvent) :void=> {
+    // cancel button triiger this function 
     const event = e.target as HTMLButtonElement;
     let index: number;
     const Userid: string = event.id.slice(8);
@@ -140,6 +144,7 @@ export class Main {
       data.id = Userid;
     }
     try {
+      //create new user here
       const user = new User(data);
       user.check(data);
       this.UserSave(data);
@@ -148,7 +153,7 @@ export class Main {
       alert(err);
     }
   };
-  edit = (e: MouseEvent) => {
+  edit = (e: MouseEvent) :void=> {
     const event = e.target as HTMLButtonElement;
     const Userid: string = event.id.slice(5);
     const row = document.getElementById(Userid) as HTMLElement;
@@ -197,10 +202,10 @@ export class Main {
     ) as HTMLButtonElement;
     discard.addEventListener("click", this.discard);
   };
-  button = (type, id, color) => {
+  button = (type, id, color):string => {
     return `<button id=${type}-${id} class="${color}">${type}</button>`;
   };
-  DeleteUser(Userid) {
+  DeleteUser(Userid:string) :void{
     for (let i = 0; i < this.data.length; i++) {
       if (Userid === this.data[i].id) {
         let place = i;
@@ -208,18 +213,18 @@ export class Main {
       }
     }
   }
-  UserSave(userInfo) {
+  UserSave(userInfo:UserDetails) :void{
     const id: string = userInfo.id;
     let flag: number = 0; //flag to check if id exist or not
 
     for (let i = 0; i < Usersdata.length; i++) {
       if (id === Usersdata[i].id) {
-        flag = 1;
-        Usersdata[i] = userInfo;
+        flag = 1;                   //for existing user
+        this.data[i] = userInfo;
       }
     }
     if (flag !== 1) {
-      Usersdata.push(userInfo);
+      this.data.push(userInfo);       //for new user
     }
   }
 }
