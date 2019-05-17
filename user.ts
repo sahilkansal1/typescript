@@ -1,12 +1,22 @@
-import { UserDetails } from "./types";
+import { userDetails } from "./types";
+/**
+ * Creates an instance of User.
+ * @constructor
+ * @this {User}
+ * @exports User
+ */
 export class User {
-  userInfo: UserDetails;
-  constructor(userInfo: UserDetails) {
+  userInfo: userDetails;
+  constructor(userInfo: userDetails) {
   
       this.userInfo = userInfo;
     
   }
-  check(userInfo) {
+    /**
+ * Creates an instance of edit.
+ * @param {userDetails} userinfo takes user details of a paticular person  
+ */
+  check(userInfo:userDetails):void {
     for (let key in userInfo) {
       if (key !== "middle_name") {
         if (userInfo[key] === "") {
@@ -14,6 +24,7 @@ export class User {
         }
       }
     }
+
     if (
       !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]{2,5})\.([a-zA-Z]{2,5})$/.test(
         //checking email

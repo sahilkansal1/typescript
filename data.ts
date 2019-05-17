@@ -1,4 +1,8 @@
-export const Usersdata=[{
+/**
+ * Creates an instance of usersData.
+ * @exports usersData
+ */
+export const usersData=[{
      id:'1',
     first_name: "sahil",
     middle_name: 'ss',

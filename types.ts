@@ -1,4 +1,7 @@
-export interface UserDetails {
+/**
+ * @exports userDetails
+ */
+export interface userDetails {
   id?: string;
   first_name?: string;
   middle_name?: string;
