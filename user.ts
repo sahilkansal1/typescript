@@ -8,15 +8,13 @@ import { userDetails } from "./types";
 export class User {
   userInfo: userDetails;
   constructor(userInfo: userDetails) {
-  
-      this.userInfo = userInfo;
-    
+    this.userInfo = userInfo;
   }
-    /**
- * Creates an instance of edit.
- * @param {userDetails} userinfo takes user details of a paticular person  
- */
-  check(userInfo:userDetails):void {
+  /**
+   * Creates an instance of edit.
+   * @param {userDetails} userinfo takes user details of a paticular person
+   */
+  check(userInfo: userDetails): void {
     for (let key in userInfo) {
       if (key !== "middle_name") {
         if (userInfo[key] === "") {

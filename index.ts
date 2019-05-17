@@ -256,7 +256,7 @@ export class Main {
    * Creates an instance of addeventlistner.
    * helps to create event listner for edit and delete button
    */
-  addeventlistner():void {
+  addeventlistner(): void {
     for (let i = 0; i < this.data.length; i++) {
       let edit = document.getElementById(
         `edit-${this.data[i].id}`
