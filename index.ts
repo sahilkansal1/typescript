@@ -161,7 +161,7 @@ export class Main {
     const event = e.target as HTMLButtonElement;
     const Userid: string = event.id.slice(5);
     const row = document.getElementById(Userid);
-    let userdata = {} as User; // user data of paticular person
+    let userdata = new User({}); // user data of paticular person
     for (let i = 0; i < this.col.length - 1; i++) {
       const td = row.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
@@ -171,8 +171,8 @@ export class Main {
     }
     try {
       //create new user here
-      const user = new User(userdata);
-      user.check(userdata);
+      // const user = new User(userdata);
+      userdata.check();
       this.users.userSave(userdata);
       this.render();
     } catch (err) {

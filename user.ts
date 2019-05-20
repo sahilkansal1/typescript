@@ -18,7 +18,7 @@ export class User {
   email: string;
   phone_no: number;
   role: string;
-  constructor(userInfo:User) {
+  constructor(userInfo:Partial<User>) {
     this.id = userInfo.id;
     this.first_name = userInfo.first_name;
     this.middle_name = userInfo.middle_name;
@@ -33,10 +33,10 @@ export class User {
    * @description check validates email , phone_no and check if a paticular field id empty or not
    * @param {userDetails} userinfo takes user details of a paticular person
    */
-  check(userInfo: User): void {
-    for (let key in userInfo) {
+  check(): void {
+    for (let key in this) {
       if (key !== "middle_name") {
-        if (userInfo[key] === "") {
+        if (this[key] === "") {
           throw "all fields are needed";
         }
       }
