@@ -1,5 +1,6 @@
 import { usersData } from "./data";
-import { userDetails } from "./types";
+import { User } from "./user";
+
 /**
  * Creates an instance of Users.
  * @constructor
@@ -7,15 +8,14 @@ import { userDetails } from "./types";
  * @exports Users
  */
 export class Users {
-  data: userDetails[];
-  constructor() {
-    this.data = usersData;
-  }
+  data: User[] = usersData as User[];
+
   /**
    * Creates an instance of DeleteUser
+   * @description deletes the the user from array
    * @param {string} userid gives id of that user which needs to deleted
    */
-  DeleteUser(Userid: string): void {
+  deleteUser(Userid: string): void {
     for (let i = 0; i < this.data.length; i++) {
       if (Userid === this.data[i].id) {
         let place = i;
@@ -25,11 +25,10 @@ export class Users {
   }
   /**
    * Creates an instance of UserSave.
-   * @constructor
+   * @description add users in array
    * @param {userDetails} userDetails is given full info of user which is needed to added in array
-   
    */
-  UserSave(userInfo: userDetails): void {
+  userSave(userInfo: User): void {
     const id: string = userInfo.id;
     let flag: number = 0; //flag to check if id exist or not
 
@@ -45,9 +44,10 @@ export class Users {
   }
   /**
    * Creates an instance of getData.
-   *@returns {[Array<userDetails>]} return array of all the users data
+   * @description give all user's data 
+   *@returns {[Array<User>]} return array of all the users data
    */
-  getData(): Array<userDetails> {
+  getData(): Array<User> {
     return this.data;
   }
 }

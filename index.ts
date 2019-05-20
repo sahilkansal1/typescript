@@ -1,4 +1,3 @@
-import { userDetails } from "./types";
 import { Users } from "./Users";
 import { User } from "./user";
 enum roles {
@@ -11,7 +10,7 @@ enum roles {
  */
 export class Main {
   col: Array<string>;
-  data: userDetails[];
+  data: User[];
   roles: string[];
   users: Users;
   constructor() {
@@ -31,6 +30,7 @@ export class Main {
   }
   /**
    * Creates an instance of html.
+   * @description returns template literal 
    * @returns {string} which is template literals
    */
   html = (): string => {
@@ -64,7 +64,7 @@ export class Main {
   };
   /**
    * Creates an instance of render.
-   * render prints all the html on the page
+   * @description render prints all the html on the page
    */
   render = () => {
     const button = document.getElementById("myButton1") as HTMLButtonElement;
@@ -99,16 +99,15 @@ export class Main {
   };
   /**
    * Creates an instance of render.
-   * @constructor
+   * @description delete user from dom and array
    * @param {MouseEvent} e is event fired from that button from where we extract userid
-   * delete user from dom and array
    */
   deleteUser = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     const Userid: string = event.id.slice(7);
     const element = document.getElementById(Userid) as HTMLElement;
     //remove user from array
-    this.users.DeleteUser(Userid);
+    this.users.deleteUser(Userid);
     //if edit button is on
     try {
       const edit = document.getElementById(`edit-${Userid}`);
@@ -125,7 +124,7 @@ export class Main {
   };
   /**
    * Creates an instance of discard.
-   * @constructor
+   * @description discard changes and move back input field to td 
    * @param {MouseEvent} e is event fired from that button from where we extract userid
    */
   discard = (e: MouseEvent): void => {
@@ -156,13 +155,13 @@ export class Main {
   /**
    * Creates an instance of discard.
    * @param {MouseEvent} e is event fired from that button from where we extract userid
-   * saves new user
+   * @description saves new user
    */
   save = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     const Userid: string = event.id.slice(5);
     const row = document.getElementById(Userid);
-    const userdata: userDetails = {}; // user data of paticular person
+    let userdata = {} as User; // user data of paticular person
     for (let i = 0; i < this.col.length - 1; i++) {
       const td = row.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
@@ -174,7 +173,7 @@ export class Main {
       //create new user here
       const user = new User(userdata);
       user.check(userdata);
-      this.users.UserSave(userdata);
+      this.users.userSave(userdata);
       this.render();
     } catch (err) {
       alert(err);
@@ -183,7 +182,7 @@ export class Main {
   /**
    * Creates an instance of edit.
    * @param {MouseEvent} e is event fired from that button from where we extract userid
-   * makes row editable (converts them to input fields)
+   * @description makes row editable (converts them to input fields)
    */
   edit = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
@@ -254,7 +253,7 @@ export class Main {
   };
   /**
    * Creates an instance of addeventlistner.
-   * helps to create event listner for edit and delete button
+   * @description helps to create event listner for edit and delete button
    */
   addeventlistner(): void {
     for (let i = 0; i < this.data.length; i++) {
