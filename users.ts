@@ -5,7 +5,7 @@ import { User } from "./user";
  * Creates an instance of Users.
  * @constructor
  * @this {Users}
- * @exports Users
+ * @exports Users class 
  */
 export class Users {
   data: User[] = usersData as User[];

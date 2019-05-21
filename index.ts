@@ -1,4 +1,4 @@
-import { Users } from "./Users";
+import { Users } from "./users";
 import { User } from "./user";
 enum roles {
   admin = "admin",
@@ -69,11 +69,10 @@ export class Main {
   render = () => {
     const button = document.getElementById("myButton1") as HTMLButtonElement;
     button.value = "refresh data";
-    const Table = document.getElementById("table") as HTMLTableElement;
-    Table.innerHTML = this.html();
+    const table = document.getElementById("table") as HTMLTableElement;
+    table.innerHTML = this.html();
     //addEventListener to all edit and delete button
     this.addeventlistner();
-    const table = document.getElementById("table") as HTMLTableElement;
     const rowCount = table.rows.length;
     const row = table.insertRow(rowCount);
     row.id = String(Date.now());
@@ -104,21 +103,21 @@ export class Main {
    */
   deleteUser = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
-    const Userid: string = event.id.slice(7);
-    const element = document.getElementById(Userid) as HTMLElement;
+    const userid: string = event.id.slice(7);
+    const element = document.getElementById(userid) as HTMLElement;
     //remove user from array
-    this.users.deleteUser(Userid);
+    this.users.deleteUser(userid);
     //if edit button is on
     try {
-      const edit = document.getElementById(`edit-${Userid}`);
+      const edit = document.getElementById(`edit-${userid}`);
       edit.removeEventListener("click", this.deleteUser);
     } catch (e) {
-      const save = document.getElementById(`save-${Userid}`);
+      const save = document.getElementById(`save-${userid}`);
       save.removeEventListener("click", this.save);
-      const discard = document.getElementById(`discard-${Userid}`);
+      const discard = document.getElementById(`discard-${userid}`);
       discard.removeEventListener("click", this.discard);
     }
-    const deleteUser = document.getElementById(`delete-${Userid}`);
+    const deleteUser = document.getElementById(`delete-${userid}`);
     deleteUser.removeEventListener("click", this.deleteUser);
     element.remove();
   };
@@ -130,26 +129,26 @@ export class Main {
   discard = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     let index: number;
-    const Userid: string = event.id.slice(8);
+    const userid: string = event.id.slice(8);
     for (let i = 0; i < this.data.length; i++) {
-      if (Userid === this.data[i].id) {
+      if (userid === this.data[i].id) {
         //index of user details of that user
         index = i;
       }
     }
-    const tab = document.getElementById(Userid) as HTMLElement;
+    const tab = document.getElementById(userid) as HTMLElement;
     for (let i = 0; i < this.col.length - 1; i++) {
       // coverting back input field to td
       const td = tab.getElementsByTagName("td")[i];
       td.innerHTML = this.data[index][this.col[i]];
     }
-    const save = document.getElementById(`save-${Userid}`);
+    const save = document.getElementById(`save-${userid}`);
     save.removeEventListener("click", this.save);
-    const discard = document.getElementById(`discard-${Userid}`);
+    const discard = document.getElementById(`discard-${userid}`);
     discard.removeEventListener("click", this.discard);
     const td = tab.getElementsByTagName("td")[this.col.length - 1];
-    td.innerHTML = `<button value='edit' id=edit-${Userid} class='btn btn-info'>edit</button>`;
-    const edit = document.getElementById(`edit-${Userid}`) as HTMLButtonElement;
+    td.innerHTML = `<button value='edit' id=edit-${userid} class='btn btn-info'>edit</button>`;
+    const edit = document.getElementById(`edit-${userid}`) as HTMLButtonElement;
     edit.addEventListener("click", this.edit);
   };
   /**
@@ -159,15 +158,15 @@ export class Main {
    */
   save = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
-    const Userid: string = event.id.slice(5);
-    const row = document.getElementById(Userid);
+    const userid: string = event.id.slice(5);
+    const row = document.getElementById(userid);
     let userdata = new User({}); // user data of paticular person
     for (let i = 0; i < this.col.length - 1; i++) {
       const td = row.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
       let txtVal = tablerow.value; //contains value of td
       userdata[this.col[i]] = txtVal;
-      userdata.id = Userid;
+      userdata.id = userid;
     }
     try {
       //create new user here
@@ -186,8 +185,8 @@ export class Main {
    */
   edit = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
-    const Userid: string = event.id.slice(5);
-    const row = document.getElementById(Userid) as HTMLElement;
+    const userid: string = event.id.slice(5);
+    const row = document.getElementById(userid) as HTMLElement;
     //to make entire row editable
     for (let i = 0; i < this.col.length - 1; i++) {
       let td = row.getElementsByTagName("td")[i];
@@ -222,15 +221,15 @@ export class Main {
         td.appendChild(ele);
       }
     }
-    const edit = document.getElementById(`edit-${Userid}`);
+    const edit = document.getElementById(`edit-${userid}`);
     edit.removeEventListener("click", this.edit);
     row.getElementsByTagName("td")[this.col.length - 1].innerHTML =
-      this.button("save", Userid, "btn btn-success") +
-      this.button("discard", Userid, "btn btn-warning"); //creating button from button function
-    const save = document.getElementById(`save-${Userid}`) as HTMLButtonElement;
+      this.button("save", userid, "btn btn-success") +
+      this.button("discard", userid, "btn btn-warning"); //creating button from button function
+    const save = document.getElementById(`save-${userid}`) as HTMLButtonElement;
     save.addEventListener("click", this.save);
     const discard = document.getElementById(
-      `discard-${Userid}`
+      `discard-${userid}`
     ) as HTMLButtonElement;
     discard.addEventListener("click", this.discard);
   };

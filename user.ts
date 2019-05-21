@@ -8,6 +8,7 @@
  *email: string;
  *phone_no: number;
  *role: any;
+ @exports User class 
  */
 export class User {
   id: string;
@@ -35,8 +36,9 @@ export class User {
    */
   check(): void {
     for (let key in this) {
+      console.log(key)
       if (key !== "middle_name") {
-        if (this[key] === "") {
+        if (key === "") {
           throw "all fields are needed";
         }
       }
