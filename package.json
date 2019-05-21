@@ -1,0 +1,21 @@
+  {
+    "name": "typescript",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "dependencies": {
+      "systemjs": "^0.21.5",
+      "ts-loader": "^6.0.0",
+      "typescript": "^3.4.5",
+      "webpack-cli": "^3.3.2",
+      "webpack-dev-server": "^3.3.1",
+      "webpack": "^4.30.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "start": "webpack-dev-server --mode development"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
