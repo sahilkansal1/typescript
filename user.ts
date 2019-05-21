@@ -30,13 +30,12 @@ export class User {
     this.role = userInfo.role;
   }
   /**
-   * Creates an instance of check.
    * @description check validates email , phone_no and check if a paticular field id empty or not
    * @param {userDetails} userinfo takes user details of a paticular person
    */
   check(): void {
     for (let key in this) {
-      console.log(key)
+     
       if (key !== "middle_name") {
         if (key === "") {
           throw "all fields are needed";

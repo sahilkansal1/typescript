@@ -29,7 +29,6 @@ export class Main {
     ];
   }
   /**
-   * Creates an instance of html.
    * @description returns template literal 
    * @returns {string} which is template literals
    */
@@ -63,7 +62,6 @@ export class Main {
       .join("")}</tbody>`;
   };
   /**
-   * Creates an instance of render.
    * @description render prints all the html on the page
    */
   render = () => {
@@ -97,7 +95,6 @@ export class Main {
     add.addEventListener("click", this.save);
   };
   /**
-   * Creates an instance of render.
    * @description delete user from dom and array
    * @param {MouseEvent} e is event fired from that button from where we extract userid
    */
@@ -122,7 +119,6 @@ export class Main {
     element.remove();
   };
   /**
-   * Creates an instance of discard.
    * @description discard changes and move back input field to td 
    * @param {MouseEvent} e is event fired from that button from where we extract userid
    */
@@ -152,7 +148,6 @@ export class Main {
     edit.addEventListener("click", this.edit);
   };
   /**
-   * Creates an instance of discard.
    * @param {MouseEvent} e is event fired from that button from where we extract userid
    * @description saves new user
    */
@@ -179,7 +174,6 @@ export class Main {
     }
   };
   /**
-   * Creates an instance of edit.
    * @param {MouseEvent} e is event fired from that button from where we extract userid
    * @description makes row editable (converts them to input fields)
    */
@@ -234,7 +228,6 @@ export class Main {
     discard.addEventListener("click", this.discard);
   };
   /**
-   * Creates an instance of discard.
    * @param {string} name can have save,edit,delete,discard
    *
    * @also
@@ -251,7 +244,6 @@ export class Main {
     return `<button id=${type}-${id} class="${color}">${type}</button>`;
   };
   /**
-   * Creates an instance of addeventlistner.
    * @description helps to create event listner for edit and delete button
    */
   addeventlistner(): void {

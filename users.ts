@@ -11,7 +11,6 @@ export class Users {
   data: User[] = usersData as User[];
 
   /**
-   * Creates an instance of DeleteUser
    * @description deletes the the user from array
    * @param {string} userid gives id of that user which needs to deleted
    */
@@ -24,7 +23,6 @@ export class Users {
     }
   }
   /**
-   * Creates an instance of UserSave.
    * @description add users in array
    * @param {userDetails} userDetails is given full info of user which is needed to added in array
    */
@@ -43,7 +41,6 @@ export class Users {
     }
   }
   /**
-   * Creates an instance of getData.
    * @description give all user's data 
    *@returns {[Array<User>]} return array of all the users data
    */
