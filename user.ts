@@ -35,7 +35,6 @@ export class User {
    */
   check(): void {
     for (let key in this) {
-     
       if (key !== "middle_name") {
         if (this[key as string] === "") {
           throw "all fields are needed";
@@ -55,7 +54,4 @@ export class User {
       throw "phone no. invalid"; //checking phone_no
     }
   }
-  // getusers(userid){
-
-  // }
 }

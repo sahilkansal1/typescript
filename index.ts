@@ -1,48 +1,36 @@
 import { Users } from "./users";
-import { roles,customer } from "./types";
+import { Customer } from "./types";
 const axios = require("axios");
-// enum roles {
-//   admin = "admin",
-//   manager = "manager"
-// }
 /**
  * Creates an instance of Main.
  * @constructor
  */
 export class Main {
   col: Array<string>;
-  data:customer[];
-  roles:roles
-  users:Users;
+  data: Customer[];
+
+  users: Users;
   constructor() {
-    let ref = this;
-   
-    
-      axios
-      .get("http://[::1]:3000/roles")
-      .then(function(response) {
-        // ref.roles = response.data;
-        ref.users = new Users(response.data);
-        // console.log(response.data[1].role)
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    // this.data = this.users.getData();
-   
-    // this.roles = [roles.admin, roles.manager];
+    this.getRoles();
     this.col = ["customerName", "website", "address"];
+  }
+  async getRoles() {
+    let user = await axios.get("http://[::1]:3000/roles");
+    this.users = new Users(user.data);
+    console.log("ss", user);
   }
   /**
    * @description returns template literal
    * @returns {string} which is template literals
    */
-  
+
   html = (): string => {
     console.log(this.data);
-    return `<thead>${this.col.map(col=>{
-      return `<th>${col}</th>`
-    }).join('')}
+    return `<thead>${this.col
+      .map(col => {
+        return `<th>${col}</th>`;
+      })
+      .join("")}
     <th colspan=2>actions</th></thead><tbody>${this.data
       .map(customer => {
         return `<tr id=${customer.id}>
@@ -71,7 +59,6 @@ export class Main {
   render = () => {
     const button = document.getElementById("myButton1") as HTMLButtonElement;
     button.value = "refresh data";
-    // button.click=this.getCustomer
     const table = document.getElementById("table") as HTMLTableElement;
     table.innerHTML = this.html();
     //addEventListener to all edit and delete button
@@ -92,21 +79,20 @@ export class Main {
   };
   /**
    * @description delete user from dom and array
-   * @param {MouseEvent} e is event fired from ref button from where we extract userid
+   * @param {MouseEvent} e is event fired from this button from where we extract userid
    */
   deleteCustomer = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     const userid: string = event.id.slice(7);
-    console.log(userid)
-    let index
+    let index;
     const element = document.getElementById(userid) as HTMLElement;
     //remove user from array
-    for(let i= 0;i<this.data.length;i++){
-      if(Number(userid)===Number(this.data[i].id)){
-        index=i
+    for (let i = 0; i < this.data.length; i++) {
+      if (Number(userid) === Number(this.data[i].id)) {
+        index = i;
       }
     }
-    this.data.splice(index,1)
+    this.data.splice(index, 1);
     axios.delete(`http://[::1]:3000/customers/${userid}`);
     //this.users.deleteUser(userid);
     //if edit button is on
@@ -122,11 +108,10 @@ export class Main {
     const deleteUser = document.getElementById(`delete-${userid}`);
     deleteUser.removeEventListener("click", this.deleteCustomer);
     element.remove();
-    
   };
   /**
    * @description discard changes and move back input field to td
-   * @param {MouseEvent} e is event fired from ref button from where we extract userid
+   * @param {MouseEvent} e is event fired from this button from where we extract userid
    */
   discard = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
@@ -134,11 +119,10 @@ export class Main {
     const userid: string = event.id.slice(8);
     for (let i = 0; i < this.data.length; i++) {
       if (Number(userid) === Number(this.data[i].id)) {
-        //index of user details of ref user
+        //index of user details of this user
         index = i;
       }
     }
-    console.log(this.data[userid])
     const tab = document.getElementById(userid) as HTMLElement;
     for (let i = 0; i < this.col.length; i++) {
       // coverting back input field to td
@@ -155,131 +139,69 @@ export class Main {
     edit.addEventListener("click", this.edit);
   };
   /**
-   * @param {MouseEvent} e is event fired from ref button from where we extract userid
+   * @param {MouseEvent} e is event fired from this button from where we extract userid
    * @description saves new user
    */
   add = (e: MouseEvent): void => {
-    // console.log('hey')
     const event = e.target as HTMLButtonElement;
     const userid: string = event.id.slice(4);
     const row = document.getElementById(userid);
-    let userdata={} ; // user data of paticular person
-    console.log(this.col)
-    for (let i = 0; i < this.col.length ; i++) {
+    let userdata = {}; // user data of paticular person
+    console.log(this.col);
+    for (let i = 0; i < this.col.length; i++) {
       const td = row.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
       let txtVal = tablerow.value; //contains value of td
       userdata[this.col[i]] = txtVal;
-      // userdata.id = userid;
-      // console.log(txtVal)
     }
-    try{
-      this.validation(userdata as customer)
-    
-    const ref = this 
-    console.log(userdata)
-    axios({
-      method: 'post',
-      url: 'http://[::1]:3000/customers',
-      data: userdata,
-      config: { headers: {'Content-Type': 'application/json' }}
-      })
-      .then(function (response) {
-          //handle success
-          console.log(response.data);
-          userdata['id']=response.data.id
-          ref.data.push(userdata as customer)
-          ref.render()
-      })
-      .catch(function (response) {
-          //handle error
-          console.log(response);
-      });}
-
-     catch (err) {
+    try {
+      this.validation(userdata as Customer);
+      this.postcustomer(userdata);
+    } catch (err) {
       alert(err);
     }
   };
-save = (e:MouseEvent) => {
-  let ref=this
-  console.log("this is save",this)
-  const event = e.target as HTMLButtonElement;
+  save = (e: MouseEvent) => {
+    console.log("this is save", this);
+    const event = e.target as HTMLButtonElement;
     const userid: string = event.id.slice(5);
     const row = document.getElementById(userid);
-    let userdata={} ; // user data of paticular person
-    console.log(this.col)
-    for (let i = 0; i < this.col.length ; i++) {
+    let userdata = {}; // user data of paticular person
+    console.log(this.col);
+    for (let i = 0; i < this.col.length; i++) {
       const td = row.getElementsByTagName("td")[i];
       const tablerow = td.childNodes[0] as HTMLInputElement;
       let txtVal = tablerow.value; //contains value of td
       userdata[this.col[i]] = txtVal;
-      // userdata.id = userid;
-      // console.log(txtVal)
     }
-    try{
-      this.validation(userdata as customer)
-      
-    console.log(userdata)
-  axios({
-    method: 'patch',
-    url: `http://[::1]:3000/customers/${userid}`,
-    data: userdata,
-    config: { headers: {'Content-Type': 'application/json' }}
-    })
-    .then(function (response) {
-        //handle success
-        
-        const tab = document.getElementById(userid) as HTMLElement;
-        for (let i = 0; i < ref.col.length; i++) {
-          // coverting back input field to td
-          const td = tab.getElementsByTagName("td")[i];
-          td.innerHTML = userdata[ref.col[i]];
-        }
-        const save = document.getElementById(`save-${userid}`);
-        save.removeEventListener("click", ref.save);
-        const discard = document.getElementById(`discard-${userid}`);
-        discard.removeEventListener("click", ref.discard);
-        const td = tab.getElementsByTagName("td")[ref.col.length];
-        td.innerHTML = `<button value='edit' id=edit-${userid} class='btn btn-info'>edit</button>`;
-        const edit = document.getElementById(`edit-${userid}`) as HTMLButtonElement;
-        edit.addEventListener("click", ref.edit);
-        console.log(response);
-       
-    })
-    .catch(function (response) {
-        //handle error
-        console.log('ss',response);
-    });}
-    catch(err){
-      alert(err)
+    try {
+      this.validation(userdata as Customer);
+      this.patchcustomer(userdata, userid);
+    } catch (err) {
+      alert(err);
     }
-
-}
+  };
   /**
-   * @param {MouseEvent} e is event fired from ref button from where we extract userid
+   * @param {MouseEvent} e is event fired from this button from where we extract userid
    * @description makes row editable (converts them to input fields)
    */
   edit = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     const userid: string = event.id.slice(5);
     const row = document.getElementById(userid) as HTMLElement;
-    
     //to make entire row editable
-    for (let i = 0; i < this.col.length ; i++) {
+    for (let i = 0; i < this.col.length; i++) {
       let td = row.getElementsByTagName("td")[i];
-      console.log('edit',td.innerHTML)
-     
-        const ele = document.createElement("input");
-        ele.setAttribute("type", "text");
-        ele.setAttribute("value", td.innerText);
-        ele.setAttribute("class", "form-control");
-        td.innerText = "";
-        td.appendChild(ele);
-   //   }
+      const ele = document.createElement("input");
+      ele.setAttribute("type", "text");
+      ele.setAttribute("value", td.innerText);
+      ele.setAttribute("class", "form-control");
+      td.innerText = "";
+      td.appendChild(ele);
     }
-   // const edit = document.getElementById(`edit-${userid}`);
-   // edit.removeEventListener("click", this.edit);
-    row.getElementsByTagName("td")[this.col.length ].innerHTML =
+    const edit = document.getElementById(`edit-${userid}`);
+    edit.removeEventListener("click", this.edit);
+    row.getElementsByTagName("td")[this.col.length].innerHTML =
       this.button("save", userid, "btn btn-success") +
       this.button("discard", userid, "btn btn-warning"); //creating button from button function
     const save = document.getElementById(`save-${userid}`) as HTMLButtonElement;
@@ -294,7 +216,7 @@ save = (e:MouseEvent) => {
    *
    * @also
    *
-   * @param {string} userid is rowid of ref row
+   * @param {string} userid is rowid of this row
    *
    * @also
    *
@@ -308,9 +230,30 @@ save = (e:MouseEvent) => {
   getusers = (e: MouseEvent): void => {
     const event = e.target as HTMLButtonElement;
     const userid: string = event.id.slice(6);
-    this.users.getUsers(userid)
-    
+    this.users.getUsers(userid);
   };
+  async patchcustomer(userdata, userid) {
+    let editCustomer = await axios({
+      method: "patch",
+      url: `http://[::1]:3000/customers/${userid}`,
+      data: userdata,
+      config: { headers: { "Content-Type": "application/json" } }
+    });
+    const tab = document.getElementById(userid) as HTMLElement;
+    for (let i = 0; i < this.col.length; i++) {
+      // coverting back input field to td
+      const td = tab.getElementsByTagName("td")[i];
+      td.innerHTML = userdata[this.col[i]];
+    }
+    const save = document.getElementById(`save-${userid}`);
+    save.removeEventListener("click", this.save);
+    const discard = document.getElementById(`discard-${userid}`);
+    discard.removeEventListener("click", this.discard);
+    const td = tab.getElementsByTagName("td")[this.col.length];
+    td.innerHTML = `<button value='edit' id=edit-${userid} class='btn btn-info'>edit</button>`;
+    const edit = document.getElementById(`edit-${userid}`) as HTMLButtonElement;
+    edit.addEventListener("click", this.edit);
+  }
   /**
    * @description helps to create event listner for edit , delete and users button
    */
@@ -330,29 +273,35 @@ save = (e:MouseEvent) => {
       getusers.addEventListener("click", this.getusers);
     }
   }
-  validation(customerdata:customer){
-    // console.log(userdata.customerName);
-    
-    if((customerdata.customerName.trim()==='')||(customerdata.address.trim()==='')){
-     throw 'empty fields'
+  validation(customerdata: Customer) {
+    if (
+      customerdata.customerName.trim() === "" ||
+      customerdata.address.trim() === ""
+    ) {
+      throw "empty fields";
     }
+  }
+  async postcustomer(userdata) {
+    let newCustomer = await axios({
+      method: "post",
+      url: "http://[::1]:3000/customers",
+      data: userdata,
+      config: { headers: { "Content-Type": "application/json" } }
+    });
+    //handle success
+    console.log(newCustomer.data);
+    userdata["id"] = newCustomer.data.id;
+    this.data.push(userdata as Customer);
+    this.render();
   }
 }
 
 const start = new Main();
 
-const getCustomer = (event) => {
-  axios
-    .get("http://[::1]:3000/customers")
-    .then(function(response) {
-      start.data = response.data;
-      console.log("ref", start)
-      start.render()
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+async function getCustomer() {
+  let getCustomer = await axios.get("http://[::1]:3000/customers");
+  start.data = getCustomer.data;
+  start.render();
 }
-
 
 document.getElementById("myButton1").addEventListener("click", getCustomer);
