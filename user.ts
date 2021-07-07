@@ -19,14 +19,14 @@ export class User {
   email: string;
   phone_no: number;
   role: string;
-  constructor(userInfo:Partial<User>) {
+  constructor(userInfo) {
     this.id = userInfo.id;
-    this.first_name = userInfo.first_name;
-    this.middle_name = userInfo.middle_name;
-    this.last_name = userInfo.last_name;
+    this.first_name = userInfo.firstName;
+    this.middle_name = userInfo.middleName;
+    this.last_name = userInfo.lastName;
     this.address = userInfo.address;
     this.email = userInfo.email;
-    this.phone_no = userInfo.phone_no;
+    this.phone_no = userInfo.phoneNo;
     this.role = userInfo.role;
   }
   /**
@@ -35,9 +35,8 @@ export class User {
    */
   check(): void {
     for (let key in this) {
-     
       if (key !== "middle_name") {
-        if (key === "") {
+        if (this[key as string] === "") {
           throw "all fields are needed";
         }
       }
