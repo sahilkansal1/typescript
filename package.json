@@ -5,11 +5,11 @@
     "main": "index.js",
     "dependencies": {
       "systemjs": "^0.21.5",
-      "ts-loader": "^6.0.0",
+      "ts-loader": "^9.4.2",
       "typescript": "^3.4.5",
-      "webpack-cli": "^3.3.2",
+      "webpack-cli": "^5.0.1",
       "webpack-dev-server": "^3.3.1",
-      "webpack": "^4.30.0"
+      "webpack": "^5.75.0"
     },
     "devDependencies": {},
     "scripts": {
